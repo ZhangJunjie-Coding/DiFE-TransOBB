@@ -1,7 +1,8 @@
-# Trans-OBB 🚀 | 基于 RT-DETR 的旋转目标检测
+# Trans-OBB 🚀 | Oriented Object Detection with RT-DETR
 
 <div align="center">
-**基于改进 RT-DETR 的 SAR 图像舰船旋转目标检测**
+
+**Improved RT-DETR for Oriented Ship Detection in SAR Imagery**
 
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![PyTorch 2.0](https://img.shields.io/badge/PyTorch-2.0.1-ee4c2c.svg)](https://pytorch.org/)
@@ -10,23 +11,23 @@
 
 </div>
 
-## 📖 项目简介
+## 📖 Introduction
 
-Trans-OBB 是一个基于 **Ultralytics** 框架改进的 **RT-DETR** 旋转目标检测（Oriented Bounding Box, OBB）项目，主要针对 **SAR 图像密集舰船检测** 任务。
+Trans-OBB is an **Oriented Bounding Box (OBB)** detection project based on an improved **RT-DETR** architecture within the **Ultralytics** framework, targeting **dense ship detection in SAR imagery**.
 
-## 🔧 环境配置
+## 🔧 Environment Setup
 
-### 硬件环境
+### Hardware
 
-| 组件 | 规格 |
-|------|------|
+| Component | Specification |
+|-----------|---------------|
 | GPU | NVIDIA RTX A6000 (48GB) |
 | CUDA | 12.2 |
 | Driver | 535.129.03 |
 
-### 核心依赖（必需）
+### Core Dependencies (Required)
 
-以下为此项目实际需要的最小依赖集：
+This is the minimal set of dependencies needed for this project:
 
 ```bash
 pip install torch==2.0.1 torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cu118
@@ -61,38 +62,36 @@ pip install \
     huggingface-hub>=0.20.0
 ```
 
+## 📊 Dataset
 
+### Data Format
 
-## 📊 数据集
-
-### 数据集格式
-
-本项目的标注格式基于 **DOTA 格式**（OBB 旋转框），数据结构如下：
+This project uses the **DOTA format** (OBB rotated boxes) with the following directory structure:
 
 ```
 dataset/
 ├── images/
-│   ├── train/          # 训练图像
-│   └── val/            # 验证图像
+│   ├── train/          # Training images
+│   └── val/            # Validation images
 ├── labels/
-│   ├── train/          # YOLO OBB 格式标注
-│   └── val/            # YOLO OBB 格式标注
-└── labelTxt/           # DOTA 原始格式标注（可选）
+│   ├── train/          # YOLO OBB format annotations
+│   └── val/            # YOLO OBB format annotations
+└── labelTxt/           # Original DOTA format annotations (optional)
 ```
 
-标注格式采用 **YOLO OBB 归一化格式**：`class_id x1 y1 x2 y2 x3 y3 x4 y4`（8 点归一化坐标）。
+Annotations use the **YOLO OBB normalized format**: `class_id x1 y1 x2 y2 x3 y3 x4 y4` (8 normalized coordinates).
 
-### 数据访问
+### Data Access
 
 ````
 通过网盘分享的文件：DenseSARShipDataSet.rar
 链接: https://pan.baidu.com/s/1p9xgsDujQJzmt0G6PkHYmg?pwd=xubv 提取码: xubv
 ````
 
-### 训练
+## 🚀 Training
 
 ```bash
-# OBB 训练（使用 DenseSARShip 数据集）
+# OBB training on DenseSARShip dataset
 yolo train model=ultralytics/cfg/models/rt-detr/final_model_light.yaml \
     data=ultralytics/cfg/datasets/DOTAv1.yaml \
     epochs=2000 \
@@ -116,15 +115,15 @@ yolo train model=ultralytics/cfg/models/rt-detr/final_model_light.yaml \
     name=trans-obb-exp
 ```
 
-或使用 Python：
+Or via Python:
 
 ```python
 from ultralytics import YOLO
 
-# 加载模型配置
+# Load model configuration
 model = YOLO("ultralytics/cfg/models/rt-detr/final_model_light.yaml")
 
-# 训练
+# Train
 results = model.train(
     data="ultralytics/cfg/datasets/DOTAv1.yaml",
     epochs=2000,
